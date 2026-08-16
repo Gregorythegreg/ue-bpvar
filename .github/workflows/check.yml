@@ -1,0 +1,38 @@
+name: check
+
+# The editor half of this library needs a running Unreal Editor, which no CI
+# runner has. What CI *can* prove is the part that decides correctness: the
+# EdGraphPinType text form. If pin_text() is wrong, every variable this library
+# creates is wrong, so that is the piece worth gating on.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Unreal 5.x ships Python 3.11; the others guard against anything that
+        # would break users running the module outside the editor.
+        python-version: ["3.9", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: pin_text checks
+        run: python bpvar.py --check
+
+      - name: doctests
+        run: python -m doctest bpvar.py -v
+
+      - name: import without unreal present
+        # The module must import on a machine with no `unreal` module at all —
+        # that is why the import is deferred into the functions that need it.
+        run: python -c "import bpvar; print('imported ok, version', bpvar.__version__)"

@@ -1,5 +1,8 @@
 # bpvar
 
+[![check](https://github.com/Gregorythegreg/ue-bpvar/actions/workflows/check.yml/badge.svg)](https://github.com/Gregorythegreg/ue-bpvar/actions/workflows/check.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Create **typed** Blueprint member variables from Unreal Python.
 
 Stock UE5. No third-party plugins. One file.
