@@ -98,13 +98,28 @@ py bpvar.py --selftest       # in the editor: creates a throwaway
 
 ## Status
 
-`--check` (the pin-type string logic) is verified and passing.
+Verified on **Unreal Engine 5.8**. `--selftest` creates a throwaway Blueprint,
+adds all six cases, reads each type back, and deletes the asset:
 
-`--selftest` needs a running editor. The technique it uses came out of a
-production UE5.4 project, but this standalone module is a rewrite of that code
-to drop a plugin dependency, and the editor path has not been re-run since the
-rewrite. If it breaks on your engine version, please open an issue with the
-output — that is the most useful bug report you can file here.
+```
+pin_text: ok
+self-test on /Game/_BpvarSelfTest/BP_BpvarSelfTest
+
+  ok   Gold             int
+  ok   Speed            float
+  ok   HasSeenIntro     bool
+  ok   HubDisplayName   text
+  ok   StashItemIds     string[]
+  ok   ItemsTable       object
+
+  cleanup: scratch deleted
+
+all cases passed - typed Blueprint variables are scriptable
+```
+
+Only 5.8 has been tested. If it breaks on your engine version, please open an
+issue with the `--selftest` output — that is the most useful report you can file
+here.
 
 `get_member_variable_type` is missing from some 5.x builds. Where it is absent,
 `add()` confirms the variable landed but prints a warning that the *type* was
